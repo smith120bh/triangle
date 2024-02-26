@@ -11,8 +11,8 @@ define_macros: list[tuple[str, str | None]] = [
 ext_modules: list[Extension] = [
     Extension(
         "triangle.core",
-        ["c/triangle.c", "triangle/core.c"],
-        include_dirs=["c"],
+        ["triangle-c/triangle.c", "triangle/core.c"],
+        include_dirs=["triangle-c"],
         define_macros=define_macros,
         # extra_compile_args=['-g'],
     ),
