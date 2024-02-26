@@ -1,5 +1,8 @@
 name: Test Triangle
-on: [pull_request, push]
+on:
+  push:
+    branches: [master]
+  pull_request:
 
 jobs:
   min_build:
