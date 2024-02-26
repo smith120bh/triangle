@@ -1,11 +1,14 @@
 import os
 import re
 
+import matplotlib.pyplot as plt
 import numpy as np
+
+from triangle.plot import plot
 
 
 def remove_comments(s):
-    return re.sub("#.*\n", '', s)
+    return re.sub("#.*\n", "", s)
 
 
 def split(tup, pos):
@@ -23,6 +26,7 @@ def loads(
     """
     Load a dictionary representing the triangle data from strings.
     """
+
     class var:
         start_at_zero = True
 
@@ -41,17 +45,17 @@ def loads(
         v = np.array(head).reshape(-1, 1 + dim + N_attr + N_bnd_markers)
         # check if starting at zero or one
 
-        var.start_at_zero = (v[0, 0] == '0')
-        data['vertices'] = np.array(v[:, 1:3], dtype='double')
+        var.start_at_zero = v[0, 0] == "0"
+        data["vertices"] = np.array(v[:, 1:3], dtype="double")
         if N_attr > 0:
-            data['vertex_attributes'] = np.array(
-                v[:, 3:3 + N_attr],
-                dtype='double',
+            data["vertex_attributes"] = np.array(
+                v[:, 3 : 3 + N_attr],
+                dtype="double",
             )
         if N_bnd_markers > 0:
-            data['vertex_markers'] = np.array(
-                v[:, 3 + N_attr:3 + N_attr + N_bnd_markers],
-                dtype='intc',
+            data["vertex_markers"] = np.array(
+                v[:, 3 + N_attr : 3 + N_attr + N_bnd_markers],
+                dtype="intc",
             )
 
         return tokens
@@ -64,13 +68,13 @@ def loads(
 
         head, tokens = split(tokens, N_triangles * (1 + N_nodes + N_attr))
         v = np.array(head).reshape(-1, 1 + N_nodes + N_attr)
-        data['triangles'] = np.array(v[:, 1:N_nodes + 1], dtype='intc')
+        data["triangles"] = np.array(v[:, 1 : N_nodes + 1], dtype="intc")
         if not var.start_at_zero:
-            data['triangles'] -= 1
+            data["triangles"] -= 1
         if N_attr > 0:
-            data['triangle_attributes'] = np.array(
-                v[:, N_nodes + 1:N_nodes + 1 + N_attr],
-                dtype='double',
+            data["triangle_attributes"] = np.array(
+                v[:, N_nodes + 1 : N_nodes + 1 + N_attr],
+                dtype="double",
             )
 
         return tokens
@@ -83,13 +87,13 @@ def loads(
 
         head, tokens = split(tokens, N_segments * (3 + N_bnd_markers))
         v = np.array(head).reshape(-1, 3 + N_bnd_markers)
-        data['segments'] = np.array(v[:, 1:3], dtype='intc')
+        data["segments"] = np.array(v[:, 1:3], dtype="intc")
         if not var.start_at_zero:
-            data['segments'] -= 1
+            data["segments"] -= 1
         if N_bnd_markers > 0:
-            data['segment_markers'] = np.array(
-                v[:, 3:3 + N_bnd_markers],
-                dtype='intc',
+            data["segment_markers"] = np.array(
+                v[:, 3 : 3 + N_bnd_markers],
+                dtype="intc",
             )
 
         return tokens
@@ -102,7 +106,7 @@ def loads(
 
         head, tokens = split(tokens, N_holes * 3)
         v = np.array(head).reshape(-1, 3)
-        data['holes'] = np.array(v[:, 1:3], dtype='double')
+        data["holes"] = np.array(v[:, 1:3], dtype="double")
 
         return tokens
 
@@ -114,10 +118,11 @@ def loads(
 
         head, tokens = split(tokens, N_areas * 2)
         v = np.array(head).reshape(-1, 2)
-        data['triangle_max_area'] = np.array(v[:, 1:2], dtype='double')
+        data["triangle_max_area"] = np.array(v[:, 1:2], dtype="double")
+        return None
 
     def _edge(inpt):
-        tokens = inpt.split('\n')
+        tokens = inpt.split("\n")
         head, tokens = split(tokens, 1)
         N_edges, N_bnd_markers = list(map(int, head[0].split()))
         if N_edges == 0:
@@ -128,13 +133,13 @@ def loads(
         rays = [x for x in tokens if len(x) == (5 + N_bnd_markers)]
         edges = np.array(edges)
         rays = np.array(rays)
-        data['edges'] = np.array(edges[:, 1:3], dtype='intc')
-        data['ray_origins'] = np.array(rays[:, 1:2], dtype='intc')
-        data['ray_directions'] = np.array(rays[:, 3:], dtype='double')
+        data["edges"] = np.array(edges[:, 1:3], dtype="intc")
+        data["ray_origins"] = np.array(rays[:, 1:2], dtype="intc")
+        data["ray_directions"] = np.array(rays[:, 3:], dtype="double")
 
         if not var.start_at_zero:
-            data['edges'] -= 1
-            data['ray_origins'] -= 1
+            data["edges"] -= 1
+            data["ray_origins"] -= 1
 
     def _regions(tokens):
         head, tokens = split(tokens, 1)
@@ -146,14 +151,17 @@ def loads(
         # but it is only 3 in la.poly
         head, tokens = split(tokens, N_areas * 4)
         v = np.array(head).reshape(-1, 4)
-        regs = np.array(v[:, 1:4], dtype='double')
+        regs = np.array(v[:, 1:4], dtype="double")
         # add an extra column to make fields equal to 4
-        regs = np.hstack((
-            regs[:, 0:2],
-            np.zeros((regs.shape[0], 1)),
-            regs[:, 2:3],
-        ))
-        data['regions'] = regs
+        regs = np.hstack(
+            (
+                regs[:, 0:2],
+                np.zeros((regs.shape[0], 1)),
+                regs[:, 2:3],
+            )
+        )
+        data["regions"] = regs
+        return None
 
     def _neigh(tokens):
         head, tokens = split(tokens, 2)
@@ -163,9 +171,10 @@ def loads(
 
         head, tokens = split(tokens, N_triangles * (1 + N_neighs))
         v = np.array(head).reshape(-1, 1 + N_neighs)
-        data['triangle_neighbors'] = np.array(v[:, 1:], dtype='intc')
+        data["triangle_neighbors"] = np.array(v[:, 1:], dtype="intc")
         if not var.start_at_zero:
-            data['triangle_neighbors'] -= 1
+            data["triangle_neighbors"] -= 1
+        return None
 
     if node:
         tok = remove_comments(node).split()
@@ -198,17 +207,17 @@ def load(directory, name):
     """
 
     data = {}
-    for ext in ('node', 'ele', 'poly', 'area', 'edge', 'neigh'):
-        filename = os.path.join(directory, name + '.' + ext)
+    for ext in ("node", "ele", "poly", "area", "edge", "neigh"):
+        filename = os.path.join(directory, name + "." + ext)
         if os.path.exists(filename):
-            with open(filename) as f:
+            with open(filename, encoding="utf-8") as f:
                 data[ext] = f.read()
     return loads(**data)
 
 
 def get_data_dir():
     root = os.path.abspath(os.path.dirname(__file__))
-    return os.path.join(root, 'data')
+    return os.path.join(root, "data")
 
 
 def get_data(name):
@@ -220,8 +229,6 @@ def get_data(name):
 
 
 def show_data(name):
-    from triangle.plot import plot
-    import matplotlib.pyplot as plt
     d = get_data(name)
     plot(plt.axes(), **d)
     plt.show()

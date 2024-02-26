@@ -73,7 +73,7 @@ disable = [
     "logging-fstring-interpolation",
 ]
 max-line-length = 120
-py-version = 3.8
+py-version = 3.12
 
 [tool.mypy]
 packages = "triangle"
