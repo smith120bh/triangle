@@ -1,0 +1,17 @@
+{
+    "cSpell.words": [],
+    "cSpell.diagnosticLevel": "Hint",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+    },
+    "mypy-type-checker.reportingScope": "workspace",
+    "pylint.severity": {
+        "refactor": "Information"
+    },
+    "python.analysis.typeCheckingMode": "basic",
+}
