@@ -20,7 +20,8 @@ test = [
     'mypy=1.6.1',
     'pylint=3.0.2',
 ]
-dev = ['numpy=1.26.1', 'cibuildwheel=2.3.0', 'twine=3.4.2', 'cython=3.0.2']
+dev = ['numpy=1.26.1', 'cibuildwheel=2.3.0', 'matplotlib=3.5.1', 'cython=3.0.2']
+plot = ['matplotlib>=3.2']
 
 [project.urls]
 Homepage = 'https://rufat.be/triangle'
@@ -61,9 +62,11 @@ disable = [
     "too-many-nested-blocks",
     "too-many-instance-attributes",
     "too-many-public-methods",
+    "too-few-public-methods",
     "protected-access",
     "missing-module-docstring",
     "missing-class-docstring",
+    "missing-function-docstring",
     "too-many-lines",
     "duplicate-code",
     "invalid-name",
