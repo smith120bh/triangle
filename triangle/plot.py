@@ -1,11 +1,19 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 import numpy as np
-from matplotlib import pyplot as plt
+
+try:
+    from matplotlib import pyplot as plt
+except ImportError:
+    from .null_matplotlib import plt  # type: ignore
 
 if TYPE_CHECKING:
-    from matplotlib.axes import Axes
+    from matplotlib.axes import Axes as ax
     from matplotlib.figure import Figure, SubFigure
+
+    from .null_matplotlib import Axes as ax_null
+
+    Axes = Union[ax, ax_null]
 
 
 def compare(
