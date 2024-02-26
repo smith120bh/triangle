@@ -52,7 +52,7 @@ triangle = [
 [tool.cibuildwheel]
 skip = ['pp*', '*musllinux*']
 test-skip = ['*-manylinux_i686', '*arm64']
-test-requires = 'pytest'
+test-requires = ['pytest==3.0.2', 'pytest-pspec==0.0.4']
 test-command = 'pytest --pspec {project}/tests'
 
 [tool.cibuildwheel.macos]
