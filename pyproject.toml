@@ -9,11 +9,18 @@ authors = [{ name = 'Dzhelil Rufat', email = 'd@rufat.be' }]
 description = 'Python binding to the triangle library'
 readme = 'README.rst'
 license = { text = 'LGPL-3.0' }
-requires-python = '>=3.7'
-dependencies = ['numpy']
+requires-python = '>=3.8'
+dependencies = ['numpy>=1.15']
 
 [project.optional-dependencies]
-test = ['pytest']
+test = [
+    'pytest=7.4.3',
+    'pytest-pspec=0.0.4',
+    'black=23.10.1',
+    'mypy=1.6.1',
+    'pylint=3.0.2',
+]
+dev = ['numpy=1.26.1', 'cibuildwheel=2.3.0', 'twine=3.4.2', 'cython=3.0.2']
 
 [project.urls]
 Homepage = 'https://rufat.be/triangle'
@@ -38,10 +45,50 @@ triangle = [
 
 [tool.cibuildwheel]
 skip = ['pp*', '*musllinux*']
-test-skip = ['*-manylinux_i686']
+test-skip = ['*-manylinux_i686', '*arm64']
 test-requires = 'pytest'
-test-command = 'pytest {project}/tests'
+test-command = 'pytest --pspec {project}/tests'
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
-test-skip = ["*arm64"]
+
+[tool.pylint]
+disable = [
+    "too-many-locals",
+    "too-many-arguments",
+    "too-many-statements",
+    "too-many-branches",
+    "too-many-nested-blocks",
+    "too-many-instance-attributes",
+    "too-many-public-methods",
+    "protected-access",
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "too-many-lines",
+    "duplicate-code",
+    "invalid-name",
+    "logging-fstring-interpolation",
+]
+max-line-length = 120
+py-version = 3.8
+
+[tool.mypy]
+packages = "triangle"
+python_version = "3.8"
+strict = true
+allow_any_generics = true
+implicit_reexport = true
+strict_optional = false
+explicit_package_bases = true
+exclude = ["build", "dist", "tests", "doc"]
+
+[[tool.mypy.overrides]]
+module = [
+    "anastruct.fem.cython.celements",
+    "anastruct.fem.cython.cbasic",
+    "Cython.build",
+]
+ignore_missing_imports = true
+
+[tool.black]
+target-version = ['py38', 'py39', 'py310', 'py311']
