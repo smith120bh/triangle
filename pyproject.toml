@@ -1,28 +1,19 @@
 [build-system]
-requires = [
-    'Cython >=3.0.2',
-    'setuptools >=61',
-]
+requires = ['Cython >=3.0.2', 'setuptools >=61']
 build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'triangle'
 dynamic = ['version']
-authors = [
-    { name = 'Dzhelil Rufat', email = 'd@rufat.be' },
-]
+authors = [{ name = 'Dzhelil Rufat', email = 'd@rufat.be' }]
 description = 'Python binding to the triangle library'
 readme = 'README.rst'
 license = { text = 'LGPL-3.0' }
 requires-python = '>=3.7'
-dependencies = [
-    'numpy',
-]
+dependencies = ['numpy']
 
 [project.optional-dependencies]
-test = [
-    'pytest',
-]
+test = ['pytest']
 
 [project.urls]
 Homepage = 'https://rufat.be/triangle'
@@ -50,3 +41,7 @@ skip = ['pp*', '*musllinux*']
 test-skip = ['*-manylinux_i686']
 test-requires = 'pytest'
 test-command = 'pytest {project}/tests'
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+test-skip = ["*arm64"]
