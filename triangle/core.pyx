@@ -229,7 +229,7 @@ cdef fout(triangulateio* c, d):
             _free()
 
 
-def triang(_in, opts):
+cpdef triang(_in, opts):
 
     if ('pointlist' not in _in) or (len(_in['pointlist']) < 3):
         raise ValueError('Input must have at least three vertices.')
