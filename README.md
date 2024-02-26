@@ -1,7 +1,8 @@
 Triangle
 --------
 
-[![Build Status](https://github.com/smith120bh/triangle/actions/workflows/wheels.yml/badge.svg?branch=master)](https://github.com/smith120bh/triangle/actions/workflows/wheels.yml)
+[![master Test Status](https://github.com/smith120bh/triangle/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/smith120bh/triangle/actions/workflows/wheels.yml)
+[![Release Wheels Status](https://github.com/smith120bh/triangle/actions/workflows/wheels.yml/badge.svg?event=release)](https://github.com/smith120bh/triangle/actions/workflows/wheels.yml)
 <!-- [![Version Status](https://img.shields.io/pypi/v/triangle.svg)](https://pypi.python.org/pypi/triangle/)
 [![Downloads](https://img.shields.io/pypi/dm/triangle.svg)](https://pypi.python.org/pypi/triangle/) -->
 
