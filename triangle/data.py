@@ -1,5 +1,6 @@
 import os
 import re
+from typing import Sequence
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,22 +8,22 @@ import numpy as np
 from triangle.plot import plot
 
 
-def remove_comments(s):
+def remove_comments(s: str) -> str:
     return re.sub("#.*\n", "", s)
 
 
-def split(tup, pos):
+def split(tup: Sequence, pos: int) -> tuple:
     return tup[:pos], tup[pos:]
 
 
 def loads(
-    node=None,
-    ele=None,
-    poly=None,
-    area=None,
-    edge=None,
-    neigh=None,
-):
+    node: str | None = None,
+    ele: str | None = None,
+    poly: str | None = None,
+    area: str | None = None,
+    edge: str | None = None,
+    neigh: str | None = None,
+) -> dict[str, np.ndarray]:
     """
     Load a dictionary representing the triangle data from strings.
     """
@@ -32,7 +33,7 @@ def loads(
 
     data = {}
 
-    def _vertices(tokens):
+    def _vertices(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 4)
         N_vertices, dim, N_attr, N_bnd_markers = list(map(int, head))
         if N_vertices == 0:
@@ -60,7 +61,7 @@ def loads(
 
         return tokens
 
-    def _ele(tokens):
+    def _ele(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 3)
         N_triangles, N_nodes, N_attr = list(map(int, head))
         if N_triangles == 0:
@@ -79,7 +80,7 @@ def loads(
 
         return tokens
 
-    def _segments(tokens):
+    def _segments(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 2)
         N_segments, N_bnd_markers = list(map(int, head))
         if N_segments == 0:
@@ -98,7 +99,7 @@ def loads(
 
         return tokens
 
-    def _holes(tokens):
+    def _holes(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 1)
         N_holes = int(head[0])
         if N_holes == 0:
@@ -110,7 +111,7 @@ def loads(
 
         return tokens
 
-    def _area(tokens):
+    def _area(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 1)
         N_areas = int(head[0])
         if N_areas == 0:
@@ -119,29 +120,29 @@ def loads(
         head, tokens = split(tokens, N_areas * 2)
         v = np.array(head).reshape(-1, 2)
         data["triangle_max_area"] = np.array(v[:, 1:2], dtype="double")
-        return None
+        return tokens
 
-    def _edge(inpt):
+    def _edge(inpt: str) -> None:
         tokens = inpt.split("\n")
         head, tokens = split(tokens, 1)
         N_edges, N_bnd_markers = list(map(int, head[0].split()))
         if N_edges == 0:
             return
 
-        tokens = [x.split() for x in tokens]
-        edges = [x for x in tokens if len(x) == (3 + N_bnd_markers)]
-        rays = [x for x in tokens if len(x) == (5 + N_bnd_markers)]
-        edges = np.array(edges)
-        rays = np.array(rays)
-        data["edges"] = np.array(edges[:, 1:3], dtype="intc")
-        data["ray_origins"] = np.array(rays[:, 1:2], dtype="intc")
-        data["ray_directions"] = np.array(rays[:, 3:], dtype="double")
+        tokens_split = [x.split() for x in tokens]
+        edges = [x for x in tokens_split if len(x) == (3 + N_bnd_markers)]
+        rays = [x for x in tokens_split if len(x) == (5 + N_bnd_markers)]
+        edges_arr = np.array(edges)
+        rays_arr = np.array(rays)
+        data["edges"] = np.array(edges_arr[:, 1:3], dtype="intc")
+        data["ray_origins"] = np.array(rays_arr[:, 1:2], dtype="intc")
+        data["ray_directions"] = np.array(rays_arr[:, 3:], dtype="double")
 
         if not var.start_at_zero:
             data["edges"] -= 1
             data["ray_origins"] -= 1
 
-    def _regions(tokens):
+    def _regions(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 1)
         N_areas = int(head[0])
         if N_areas == 0:
@@ -161,9 +162,9 @@ def loads(
             )
         )
         data["regions"] = regs
-        return None
+        return tokens
 
-    def _neigh(tokens):
+    def _neigh(tokens: Sequence[str]) -> Sequence[str]:
         head, tokens = split(tokens, 2)
         N_triangles, N_neighs = list(map(int, head))
         if N_triangles == 0:
@@ -174,10 +175,10 @@ def loads(
         data["triangle_neighbors"] = np.array(v[:, 1:], dtype="intc")
         if not var.start_at_zero:
             data["triangle_neighbors"] -= 1
-        return None
+        return tokens
 
     if node:
-        tok = remove_comments(node).split()
+        tok: Sequence[str] = remove_comments(node).split()
         _vertices(tok)
     if ele:
         tok = remove_comments(ele).split()
@@ -201,7 +202,7 @@ def loads(
     return data
 
 
-def load(directory, name):
+def load(directory: str, name: str) -> dict[str, np.ndarray]:
     """
     Load a dictionary representing the triangle data from `directory` and `name`.
     """
@@ -215,12 +216,12 @@ def load(directory, name):
     return loads(**data)
 
 
-def get_data_dir():
+def get_data_dir() -> str:
     root = os.path.abspath(os.path.dirname(__file__))
     return os.path.join(root, "data")
 
 
-def get_data(name):
+def get_data(name: str) -> dict[str, np.ndarray]:
     """
     Load data samples provided with the module.
     Examples: A, dots, ell, face, ...
@@ -228,7 +229,7 @@ def get_data(name):
     return load(get_data_dir(), name)
 
 
-def show_data(name):
+def show_data(name: str) -> None:
     d = get_data(name)
     plot(plt.axes(), **d)
     plt.show()

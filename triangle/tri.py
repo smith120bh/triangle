@@ -1,4 +1,9 @@
-from .core import triang  # pylint: disable=import-error
+from typing import TYPE_CHECKING
+
+from .core import triang  # type: ignore # pylint: disable=import-error
+
+if TYPE_CHECKING:
+    import numpy as np
 
 terms = (
     # points
@@ -27,7 +32,9 @@ translate_frw = dict(terms)
 translate_inv = {_1: _0 for _0, _1 in terms}
 
 
-def triangulate(tri, opts=""):
+def triangulate(
+    tri: "dict[str, np.ndarray]", opts: str = ""
+) -> "dict[str, np.ndarray]":
     """
     Perform triangulation on the input data `tri`. `tri` must be a dictionary
     that contains the following keys:
@@ -86,14 +93,14 @@ def triangulate(tri, opts=""):
     """
     opts = "Qz{%s}" % opts
 
-    tri = {translate_inv[_]: tri[_] for _ in tri}
+    tri = {translate_inv[str(_)]: tri[str(_)] for _ in tri}
     tri, _ = triang(tri, opts)
-    tri = {translate_frw[_]: tri[_] for _ in tri}
+    tri = {translate_frw[str(_)]: tri[str(_)] for _ in tri}
 
     return tri
 
 
-def delaunay(pts):
+def delaunay(pts: "np.ndarray") -> "np.ndarray":
     """
     Computes the delaunay triangulation of points `pts`.
 
@@ -111,10 +118,10 @@ def delaunay(pts):
     _out, _vorout = triang(_in, opts)
     rslt = _out["trianglelist"]
 
-    return rslt
+    return rslt  # type: ignore
 
 
-def convex_hull(pts):
+def convex_hull(pts: "np.ndarray") -> "np.ndarray":
     """
     Computes the convex hull enclosing `pts`.
 
@@ -132,10 +139,12 @@ def convex_hull(pts):
     _out, _vorout = triang(_in, opts)
     rslt = _out["segmentlist"]
 
-    return rslt
+    return rslt  # type: ignore
 
 
-def voronoi(pts):
+def voronoi(
+    pts: "np.ndarray",
+) -> tuple["np.ndarray", "np.ndarray", "np.ndarray", "np.ndarray"]:
     """
     Computes the voronoi diagram `pts`.
 

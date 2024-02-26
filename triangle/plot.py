@@ -1,8 +1,20 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
+from matplotlib import pyplot as plt
+
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure, SubFigure
 
 
-def compare(plt, A, B, figsize=(6, 3)):
-    plt.figure(figsize=figsize)
+def compare(
+    fig: "Figure|SubFigure",
+    A: dict[str, np.ndarray],
+    B: dict[str, np.ndarray],
+    figsize: tuple[float, float] = (6, 3),
+) -> None:
+    plt.figure(num=fig, figsize=figsize)
     ax1 = plt.subplot(121)
     plot(ax1, **A)
     lim = ax1.axis()
@@ -12,8 +24,13 @@ def compare(plt, A, B, figsize=(6, 3)):
     plt.tight_layout()
 
 
-def comparev(plt, A, B, figsize=(3, 6)):
-    plt.figure(figsize=figsize)
+def comparev(
+    fig: "Figure|SubFigure",
+    A: dict[str, np.ndarray],
+    B: dict[str, np.ndarray],
+    figsize: tuple[float, float] = (3, 6),
+) -> None:
+    plt.figure(num=fig, figsize=figsize)
     ax1 = plt.subplot(211)
     plot(ax1, **A)
     lim = ax1.axis()
@@ -23,7 +40,8 @@ def comparev(plt, A, B, figsize=(3, 6)):
     plt.tight_layout()
 
 
-def plot(ax, **kw):
+def plot(ax: "Axes", **kw: np.ndarray) -> None:
+    assert ax.axes is not None
     ax.axes.set_aspect("equal")
     vertices(ax, **kw)
     if "segments" in kw:
@@ -43,7 +61,7 @@ def plot(ax, **kw):
     ax.get_yaxis().set_visible(False)
 
 
-def vertices(ax, **kw):
+def vertices(ax: "Axes", **kw: np.ndarray) -> None:
     verts = np.array(kw["vertices"])
     ax.scatter(*verts.T, color="k")
     if "labels" in kw:
@@ -55,7 +73,7 @@ def vertices(ax, **kw):
             ax.text(verts[i, 0], verts[i, 1], str(vm[i]))
 
 
-def segments(ax, **kw):
+def segments(ax: "Axes", **kw: np.ndarray) -> None:
     verts = np.array(kw["vertices"])
     segs = np.array(kw["segments"])
     for beg, end in segs:
@@ -71,17 +89,17 @@ def segments(ax, **kw):
         )
 
 
-def triangles(ax, **kw):
+def triangles(ax: "Axes", **kw: np.ndarray) -> None:
     verts = np.array(kw["vertices"])
     ax.triplot(verts[:, 0], verts[:, 1], kw["triangles"], "ko-")
 
 
-def holes(ax, **kw):
+def holes(ax: "Axes", **kw: np.ndarray) -> None:
     holes_arr = np.array(kw["holes"])
-    ax.scatter(*holes_arr.T, marker="x", color="r")
+    ax.scatter(*holes_arr.T, marker="x", color="r")  # type: ignore
 
 
-def edges(ax, **kw):
+def edges(ax: "Axes", **kw: np.ndarray) -> None:
     """
     Plot regular edges and rays (edges whose one endpoint is at infinity)
     """
@@ -118,7 +136,7 @@ def edges(ax, **kw):
     ax.axis(lim)  # make sure figure is not rescaled by ifinite ray
 
 
-def regions(ax, **kw):
+def regions(ax: "Axes", **kw: np.ndarray) -> None:
     """
     Plot regions labeled by region
     """
@@ -128,7 +146,7 @@ def regions(ax, **kw):
         ax.text(x, y, f" {r}", color="b", va="center")
 
 
-def triangle_attributes(ax, **kw):
+def triangle_attributes(ax: "Axes", **kw: np.ndarray) -> None:
     """
     Plot triangle attributes labeled by region
     """
