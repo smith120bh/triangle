@@ -51,8 +51,9 @@ triangle = [
 
 [tool.cibuildwheel]
 skip = ['pp*', '*musllinux*']
-test-skip = ['*-manylinux_i686', '*arm64']
-test-requires = 'pytest'
+# tests are really slow on i686 for some reason, and they're quite uncommon nowadays. Skip testing them.
+test-skip = ['*-manylinux_i686']
+test-requires = ['pytest==7.4.3', 'pytest-pspec==0.0.4']
 test-command = 'pytest --pspec {project}/tests'
 
 [tool.cibuildwheel.macos]

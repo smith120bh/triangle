@@ -1,6 +1,8 @@
 name: Build Wheels
 
-on: [pull_request]
+on:
+  release:
+    types: [published, edited]
 
 jobs:
   build_wheels:
@@ -20,6 +22,11 @@ jobs:
           output-dir: dist
           config-file: "{package}/pyproject.toml"
       - uses: actions/upload-artifact@v4
-      with:
-        name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-        path: dist/
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: dist/
+      # - name: Publish to pypi
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     user: __token__
+      #     password: ${{ secrets.PYPI_PASS }}

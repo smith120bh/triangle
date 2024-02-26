@@ -2,7 +2,11 @@ import os
 import re
 from typing import Optional, Sequence
 
-import matplotlib.pyplot as plt
+try:
+    from matplotlib import pyplot as plt
+except ImportError:
+    from .null_matplotlib import plt  # type: ignore
+
 import numpy as np
 
 from triangle.plot import plot
