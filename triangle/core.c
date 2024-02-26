@@ -11,7 +11,7 @@
         ],
         "name": "triangle.core",
         "sources": [
-            "/home/brooks/git/triangle/triangle/core.pyx"
+            "triangle/core.pyx"
         ]
     },
     "module_name": "triangle.core"

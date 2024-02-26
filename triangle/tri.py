@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from triangle.core import triang  # type: ignore # pylint: disable=import-error
+from .core import triang  # type: ignore # pylint: disable=import-error
 
 if TYPE_CHECKING:
     import numpy as np

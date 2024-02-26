@@ -1,5 +1,6 @@
 from typing import Optional
 
+from Cython.Build import cythonize
 from setuptools import Extension, setup
 
 define_macros: list[tuple[str, Optional[str]]] = [
@@ -9,6 +10,8 @@ define_macros: list[tuple[str, Optional[str]]] = [
     ("TRILIBRARY", "1"),
     ("ANSI_DECLARATORS", "1"),
 ]
+
+cythonize(["triangle/core.pyx"])
 
 ext_modules: list[Extension] = [
     Extension(
