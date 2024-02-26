@@ -4,7 +4,7 @@ from libc.stdlib cimport free
 import numpy as np
 
 
-cdef extern from "triangle.h":
+cdef extern from "../triangle-c/triangle.h":
 
     struct triangulateio:
 
