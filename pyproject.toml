@@ -77,7 +77,7 @@ py-version = 3.12
 
 [tool.mypy]
 packages = "triangle"
-python_version = "3.8"
+python_version = "3.12"
 strict = true
 allow_any_generics = true
 implicit_reexport = true

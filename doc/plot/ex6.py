@@ -18,6 +18,6 @@ pts = np.vstack([pts0, pts1])
 seg = np.vstack([seg0, seg1 + seg0.shape[0]])
 
 A = dict(vertices=pts, segments=seg, holes=[[0, 0]])
-B = tr.triangulate(A, 'qpa0.05')
+B = tr.triangulate(A, "qpa0.05")
 tr.compare(plt, A, B)
 plt.show()
