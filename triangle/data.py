@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Sequence
+from typing import Optional, Sequence
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,12 +17,12 @@ def split(tup: Sequence, pos: int) -> tuple:
 
 
 def loads(
-    node: str | None = None,
-    ele: str | None = None,
-    poly: str | None = None,
-    area: str | None = None,
-    edge: str | None = None,
-    neigh: str | None = None,
+    node: Optional[str] = None,
+    ele: Optional[str] = None,
+    poly: Optional[str] = None,
+    area: Optional[str] = None,
+    edge: Optional[str] = None,
+    neigh: Optional[str] = None,
 ) -> dict[str, np.ndarray]:
     """
     Load a dictionary representing the triangle data from strings.

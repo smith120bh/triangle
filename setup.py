@@ -1,6 +1,8 @@
+from typing import Optional
+
 from setuptools import Extension, setup
 
-define_macros: list[tuple[str, str | None]] = [
+define_macros: list[tuple[str, Optional[str]]] = [
     ("VOID", "void"),
     ("REAL", "double"),
     ("NO_TIMER", "1"),
