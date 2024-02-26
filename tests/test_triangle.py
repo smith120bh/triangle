@@ -1,6 +1,6 @@
 import numpy as np
 
-from triangle import triangulate, convex_hull, voronoi, delaunay
+from triangle import convex_hull, delaunay, triangulate, voronoi
 
 
 def test_triangulate():

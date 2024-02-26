@@ -4,7 +4,7 @@ from libc.stdlib cimport free
 import numpy as np
 
 
-cdef extern from "triangle.h":
+cdef extern from "../triangle-c/triangle.h":
 
     struct triangulateio:
 
@@ -229,7 +229,7 @@ cdef fout(triangulateio* c, d):
             _free()
 
 
-def triang(_in, opts):
+cpdef triang(_in, opts):
 
     if ('pointlist' not in _in) or (len(_in['pointlist']) < 3):
         raise ValueError('Input must have at least three vertices.')

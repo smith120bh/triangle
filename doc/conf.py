@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Triangle'
-copyright = '2020, Dzhelil Rufat'
-author = 'Dzhelil Rufat'
+project = "Triangle"
+copyright = "2020, Dzhelil Rufat"
+author = "Dzhelil Rufat"
 
 # The full version, including alpha/beta/rc tags
-release = '20200325'
+release = "20200325"
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,17 +31,18 @@ release = '20200325'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-              'matplotlib.sphinxext.plot_directive',
-              'IPython.sphinxext.ipython_directive',
-              'IPython.sphinxext.ipython_console_highlighting',
-              'sphinx.ext.mathjax',
-              'sphinx.ext.autodoc',
-              'sphinx.ext.doctest',
-              'sphinx.ext.inheritance_diagram',
-              'numpydoc']
+    "matplotlib.sphinxext.plot_directive",
+    "IPython.sphinxext.ipython_directive",
+    "IPython.sphinxext.ipython_console_highlighting",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.doctest",
+    "sphinx.ext.inheritance_diagram",
+    "numpydoc",
+]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -54,10 +55,10 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "alabaster"
 
 html_theme_options = {
-    'show_relbars' : True,  # add previous page / next page links
+    "show_relbars": True,  # add previous page / next page links
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

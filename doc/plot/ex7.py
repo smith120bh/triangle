@@ -11,22 +11,25 @@ regions = []
 
 # make a box with given dims and place given attribute at its center
 def make_box(x, y, w, h, attribute):
-
     i = len(vertices)
 
-    vertices.extend([
-        [x, y],
-        [x + w, y],
-        [x + w, y + h],
-        [x, y + h],
-    ])
+    vertices.extend(
+        [
+            [x, y],
+            [x + w, y],
+            [x + w, y + h],
+            [x, y + h],
+        ]
+    )
 
-    segments.extend([
-        (i + 0, i + 1),
-        (i + 1, i + 2),
-        (i + 2, i + 3),
-        (i + 3, i + 0),
-    ])
+    segments.extend(
+        [
+            (i + 0, i + 1),
+            (i + 1, i + 2),
+            (i + 2, i + 3),
+            (i + 3, i + 0),
+        ]
+    )
 
     regions.append([x + 0.5 * w, y + 0.5 * h, attribute, 0])
 
@@ -38,7 +41,7 @@ make_box(1, 3, 1, 1, 3)
 make_box(3, 3, 1, 1, 4)
 
 A = dict(vertices=vertices, segments=segments, regions=regions)
-B = tr.triangulate(A, 'pA')
+B = tr.triangulate(A, "pA")
 
 tr.compare(plt, A, B)
 plt.show()
