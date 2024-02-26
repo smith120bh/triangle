@@ -11,7 +11,6 @@ regions = []
 
 # make a box with given dims and place given attribute at its center
 def make_box(x, y, w, h, attribute):
-
     i = len(vertices)
 
     vertices.extend(
